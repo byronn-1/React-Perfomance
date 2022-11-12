@@ -1,27 +1,26 @@
-import { useCallback, useMemo, useState } from 'react';
-import MyButton from './MyButton';
+import { lazy, Suspense, useCallback, useMemo, useState } from "react";
 
-/* 
-  Here we still need to tell react to render everything but the component that is slowing down the page render, i.e. the MyButton component. On to Branch => 04-lazy-and-suspense
-*/
+const MyButton = lazy(() => import("./MyButton"));
+
+
 export default function App() {
-
   const [num, setNum] = useState(10);
-  const [logValue, setLogValue] = useState('');
+  const [logValue, setLogValue] = useState("");
 
   const fibValue = useMemo(() => {
-    console.log('calculating fib value');
+    console.log("calculating fib value");
     return fib(num);
   }, [num]);
 
   const onClickLog = useCallback(() => {
-      console.log(logValue)
+    console.log(logValue);
   }, [logValue]);
-
 
   return (
     <>
-      <h1>Fib {num} is {fibValue}</h1>
+      <h1>
+        Fib {num} is {fibValue}
+      </h1>
       <input
         type="number"
         value={num}
@@ -32,15 +31,18 @@ export default function App() {
         value={logValue}
         onChange={(event) => setLogValue(event.target.value)}
       />
-      <MyButton
-        onClick={onClickLog}
-      >Log Value</MyButton>
+
+      {logValue.length > 0 ? (
+        <Suspense fallback={<div>Loading...</div>}>
+          <MyButton onClick={onClickLog}>Log Value</MyButton>
+        </Suspense>
+      ) : null}
     </>
   );
 }
 
 function fib(n) {
-  if( n === 2 ) return 1;
+  if (n === 2) return 1;
   if (n === 1) return 0;
   return fib(n - 1) + fib(n - 2);
 }
