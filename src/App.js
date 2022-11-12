@@ -1,10 +1,8 @@
 import { useMemo, useState } from 'react';
 import MyButton from './MyButton';
 
-
 /* 
-The problem with this approach/branch is that we pass a function as a prop into the MyButton component....
-  This means that every time the component renders there will be a new function constructed and thus these two functions will NOT be equal so MyButton will render every time. We Need to get a reference to what is returned from the function not the function itself.
+Now we are using useMemo to track/memoise the value of the function fibValue, while passing a reference of the fibValue function into the props of the MyButton component. We can instead use useCallback to track/memoise the entire function itself.... onto Branch => 03-implement-useCallback
 */
 export default function App() {
 
@@ -15,6 +13,13 @@ export default function App() {
     console.log('calculating fib value');
     return fib(num);
   }, [num]);
+
+  const onClickLog = useMemo(() => {
+    return () => {
+      console.log(logValue)
+    }
+  }, [logValue]);
+
 
   return (
     <>
@@ -30,9 +35,7 @@ export default function App() {
         onChange={(event) => setLogValue(event.target.value)}
       />
       <MyButton
-        onClick={() => {
-          console.log(logValue)
-      }}
+        onClick={onClickLog}
       >Log Value</MyButton>
     </>
   );
