@@ -1,14 +1,24 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import MyButton from './MyButton';
 
+
+/* 
+The problem with this approach/branch is that we pass a function as a prop into the MyButton component....
+  This means that every time the component renders there will be a new function constructed and thus these two functions will NOT be equal so MyButton will render every time. We Need to get a reference to what is returned from the function not the function itself.
+*/
 export default function App() {
 
   const [num, setNum] = useState(10);
   const [logValue, setLogValue] = useState('');
 
+  const fibValue = useMemo(() => {
+    console.log('calculating fib value');
+    return fib(num);
+  }, [num]);
+
   return (
     <>
-      <h1>Fib {num} is {fib(num)}</h1>
+      <h1>Fib {num} is {fibValue}</h1>
       <input
         type="number"
         value={num}
