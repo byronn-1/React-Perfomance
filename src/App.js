@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import MyButton from './MyButton';
 
 /* 
-Now we are using useMemo to track/memoise the value of the function fibValue, while passing a reference of the fibValue function into the props of the MyButton component. We can instead use useCallback to track/memoise the entire function itself.... onto Branch => 03-implement-useCallback
+  Here we still need to tell react to render everything but the component that is slowing down the page render, i.e. the MyButton component. On to Branch => 04-lazy-and-suspense
 */
 export default function App() {
 
@@ -14,10 +14,8 @@ export default function App() {
     return fib(num);
   }, [num]);
 
-  const onClickLog = useMemo(() => {
-    return () => {
+  const onClickLog = useCallback(() => {
       console.log(logValue)
-    }
   }, [logValue]);
 
 
