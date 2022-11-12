@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import MyButton from './MyButton';
 
-function App() {
+export default function App() {
+
+  const [num, setNum] = useState(10);
+  const [logValue, setLogValue] = useState('');
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1>Fib {num} is {fib(num)}</h1>
+      <input
+        type="number"
+        value={num}
+        onChange={(event) => setNum(parseInt(event.target.value))}
+      />
+      <input
+        type="text"
+        value={logValue}
+        onChange={(event) => setLogValue(event.target.value)}
+      />
+      <MyButton
+        onClick={() => {
+          console.log(logValue)
+      }}
+      >Log Value</MyButton>
+    </>
   );
 }
 
-export default App;
+function fib(n) {
+  if( n === 2 ) return 1;
+  if (n === 1) return 0;
+  return fib(n - 1) + fib(n - 2);
+}
