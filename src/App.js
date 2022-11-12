@@ -4,7 +4,7 @@ import MyButton from './MyButton';
 
 /* 
 The problem with this approach/branch is that we pass a function as a prop into the MyButton component....
-  This means that every time the component renders there will be a new function constructed and thus these two functions will NOT be equal so MyButton will render every time. We Need to get a reference to what is returned from the function not the function itself.
+  This means that every time the component renders there will be a new function constructed and thus these two functions will NOT be equal so MyButton will render every time. We need to get a reference to what is returned from the function not the function itself. On to Branch => 02-useMemo-on-props-function
 */
 export default function App() {
 
